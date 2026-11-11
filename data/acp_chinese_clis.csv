@@ -1,0 +1,5 @@
+agent,ACP command,official_source,t3_code_setup,free_status_check
+DeepSeek Harness,dsh --profile acp,https://api-docs.deepseek.com/en/,"T3 docs provide this example; configure agent credentials separately", "CLI availability or a free named model does not establish a free API quota"
+Qwen Code,qwen --acp,https://github.com/QwenLM/qwen-code,"T3 Local ACP command; executable qwen, arg --acp", "Alibaba docs describe limited new-user trial quotas on eligible models/regions; verify model, region, account and expiry"
+MiniMax Code,mcode acp,https://github.com/MiniMax-AI/minimax-code,"T3 Local ACP command; executable mcode, arg acp", "ACP support yes; account/token plan or compatible API credentials may be paid"
+Kimi Code CLI,kimi acp,https://moonshotai.github.io/kimi-code/en/reference/kimi-acp,"T3 Local ACP command; executable kimi, arg acp", "ACP support yes; check current Kimi Code account quota/membership; older kimi-cli is archived"
