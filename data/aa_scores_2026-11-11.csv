@@ -1,7 +1,7 @@
 model,artificial_analysis_intelligence_v5,briefcase_elo,automationbench_pct,frontiercode_aa_2_pct,terminal_bench_4_pct,gdpval_aa_v2_1,source_url,notes
-Kimi K3.1 Pro,46,1674,73.3,25.5,67.2,1861,https://artificialanalysis.ai/models/comparisons/kimi-k3-1-pro-vs-gpt-5-5,"AA reported; GDPval value surfaced on AA leaderboard; model likely paid"
+Kimi K3.1 Pro,46,1674,73.3,25.5,67.2,,https://artificialanalysis.ai/models/comparisons/kimi-k3-1-pro-vs-gpt-5-5,"AA reported; GDPval value surfaced on AA leaderboard; model likely paid"
 DeepSeek V4.1 Flash 1017 Max,33,1570,66.6,28.5,33.8,1746,https://artificialanalysis.ai/models/comparisons/deepseek-v4-1-flash-1017-vs-glm-5-3,"AA comparison and GDPval leaderboard; distinguish paid Max from advertised free Flash"
 GLM-5.3 Max,32,1503,62.2,21.6,41.9,,https://artificialanalysis.ai/models/comparisons/deepseek-v4-1-flash-1017-vs-glm-5-3,"Paid model"
-Qwen3.8 Max 0902,34,1605,56.2,23.4,38.9,,https://artificialanalysis.ai/models/comparisons/grok-4-7-low-vs-qwen3-8-max,"Paid model; index and component figures shown in AA model comparison"
+Qwen3.8 Max 0902,34,1608,56,23,39,,https://artificialanalysis.ai/models/comparisons/grok-4-7-low-vs-qwen3-8-max,"Paid model; index and component figures shown in AA model comparison"
 MiMo V2.6 Pro,30,1512,,24.0,34.8,,https://artificialanalysis.ai/models/comparisons/mimo-v2-6-pro-vs-glm-5-3,"Paid Pro variant"
 MiniMax M3.1 Flash,29,1474,72.5,20.8,25.8,,https://artificialanalysis.ai/models/comparisons/minimax-m3-1-flash-vs-glm-5-3,"Paid/plan model; not same thing as a provider's free allocation"

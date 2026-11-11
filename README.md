@@ -28,7 +28,7 @@ The free AA endpoint provides headline indices/capability scores, not the full b
 
 ## Findings as of 2026-11-11
 
-- Current local OpenCode inventory showed 71 model IDs. The captured public catalog snapshot had 66 $0 entries across three free-catalog/provider sources represented in the scan at that time; 12 matched local OpenCode names. These counts change and are not a complete census of every model vendor.
+- The refreshed all-provider catalog scan found 565 entries with explicitly zero input and output price: 550 from models.dev and 15 from OpenRouter. Twelve exact IDs matched the 71 models shown by local `opencode models`. Many models.dev entries omit modality, so this is a candidate list, not 565 confirmed chat models. These counts change and are not a complete census of every model vendor.
 - Chinese-model name detection is a convenience heuristic, not verified model provenance. The Chinese CLIs below do work with T3 Code's local ACP mechanism, but ACP only connects an agent process; it does not give it free credentials, quota, or a free model.
 - There is no single best model across domains. For coding among the compared Chinese models, Kimi K3.1 Pro was strongest on Terminal-Bench 4.0 while DeepSeek V4.1 Flash 1017 Max led FrontierCode-AA 2.0. AA's combined intelligence index rewards a wider set of tasks, so it is not a coding-only score.
 - For knowledge work and document artifacts, AA-Briefcase and GDPval-AA are useful proxies. They include multi-step work and generated artifacts such as presentations, spreadsheets, and documents. They do not fully measure presentation visual polish or the quality of a specific PowerPoint deliverable.
@@ -36,6 +36,6 @@ The free AA endpoint provides headline indices/capability scores, not the full b
 
 ## Research and method
 
-See [`research/current-findings-2026-11-11.md`](research/current-findings-2026-11-11.md) for ACP setup, provider limits, benchmark interpretation, and model-by-task analysis. The dated AA table in `data/aa_scores_2026-11-11.csv` supports a clearly labeled heuristic coding composite: 60% FrontierCode-AA 2.0 and 40% Terminal-Bench 4.0 (the 15:10 weight ratio in AA's coding component). It is not an official AA coding index. The `briefcase_elo` and `gdpval_aa_v2_1` columns are separate measures and should not be blended into that composite.
+See [`research/current-findings-2026-11-11.md`](research/current-findings-2026-11-11.md) for ACP setup, provider limits, benchmark interpretation, matched free-family candidates, and model-by-task analysis. The dated AA table in `data/aa_scores_2026-11-11.csv` supports a clearly labeled heuristic coding composite; `data/aa_free_variant_comparables_2026-11-11.csv` separately covers the AA-scored Flash families that resemble free catalog variants: 60% FrontierCode-AA 2.0 and 40% Terminal-Bench 4.0 (the 15:10 weight ratio in AA's coding component). It is not an official AA coding index. The `briefcase_elo` and `gdpval_aa_v2_1` columns are separate measures and should not be blended into that composite.
 
 The tracker is a discovery tool, not an uptime monitor. For genuine “is it usable right now?” tracking, add periodic checks using the exact credentials and endpoints you intend to use, record HTTP errors/latency/quota, and never send private code to an untrusted free endpoint.
