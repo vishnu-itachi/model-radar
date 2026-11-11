@@ -69,7 +69,9 @@ def main():
         status["local_opencode"] = f"error: {err}" if err else f"ok ({len(local)} models listed)"
     print(f"Checked: {dt.datetime.now().astimezone().isoformat(timespec='seconds')}")
     print("Sources: " + "; ".join(f"{k}={v}" for k,v in status.items()))
-    print(f"Advertised zero-price entries: {len(models)}; visible in OpenCode: {sum(x['visible_in_local_opencode'] for x in models.values())}")
+    visible_count = sum(x["visible_in_local_opencode"] is True for x in models.values())
+    visibility = "not checked" if args.skip_local else str(visible_count)
+    print(f"Advertised zero-price entries: {len(models)}; visible in OpenCode: {visibility}")
     print(f"New entries vs previous snapshot: {len(set(models)-set(old))}; removed: {len(set(old)-set(models))}")
     if any(status.get(s) != "ok" for s in ("models.dev", "openrouter")):
         print("Catalog fetch incomplete; not saving a partial snapshot.", file=sys.stderr); return 1
