@@ -39,3 +39,16 @@ The free AA endpoint provides headline indices/capability scores, not the full b
 See [`research/current-findings-2026-11-11.md`](research/current-findings-2026-11-11.md) for ACP setup, provider limits, benchmark interpretation, matched free-family candidates, and model-by-task analysis. The dated AA table in `data/aa_scores_2026-11-11.csv` supports a clearly labeled heuristic coding composite; `data/aa_free_variant_comparables_2026-11-11.csv` separately covers the AA-scored Flash families that resemble free catalog variants: 60% FrontierCode-AA 2.0 and 40% Terminal-Bench 4.0 (the 15:10 weight ratio in AA's coding component). It is not an official AA coding index. The `briefcase_elo` and `gdpval_aa_v2_1` columns are separate measures and should not be blended into that composite.
 
 The tracker is a discovery tool, not an uptime monitor. For genuine “is it usable right now?” tracking, add periodic checks using the exact credentials and endpoints you intend to use, record HTTP errors/latency/quota, and never send private code to an untrusted free endpoint.
+
+## Public daily dashboard
+
+GitHub Actions publishes a static dashboard to GitHub Pages at `https://vishnu-itachi.github.io/model-radar/` once the public repository and Pages deployment are enabled. The workflow runs daily at 07:00 IST, on pushes to `main`, or manually from the Actions tab. It refreshes public catalog metadata, builds the dashboard data, and deploys Pages. It does not refresh AA benchmark scores; those remain labeled with their snapshot date. No provider credentials are needed for the public catalog scan.
+
+To preview locally, run:
+
+```sh
+python3 scripts/build_site.py
+python3 -m http.server 8000 --directory site
+```
+
+Then open `http://localhost:8000`. On hosted runs the catalog tracker skips the local OpenCode comparison because the GitHub runner does not share your machine's installed/authenticated provider list.

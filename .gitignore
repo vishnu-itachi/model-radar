@@ -2,3 +2,4 @@ data/free-models-latest.json
 data/aa-free-latest.json
 __pycache__/
 *.py[cod]
+site/data/

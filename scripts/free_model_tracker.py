@@ -29,6 +29,7 @@ def local_models():
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--state", default="data/free-models-latest.json")
+    ap.add_argument("--skip-local", action="store_true", help="skip checking OpenCode; useful for hosted scheduled runs")
     ap.add_argument("--include-non-chat", action="store_true", help="include catalog entries not explicitly marked text-in/text-out")
     args = ap.parse_args()
     path = pathlib.Path(args.state)
@@ -59,9 +60,13 @@ def main():
             models[f"openrouter/{mid}"] = {"name": m.get("name", mid), "source": "openrouter", "input_cost": p.get("prompt"), "output_cost": p.get("completion"), "context": m.get("context_length"), "tool_call": None, "modality": modality or None, "origin_hint": bool(HINTS.search(mid))}
         status["openrouter"] = "ok"
     except Exception as e: status["openrouter"] = f"error: {e}"
-    local, err = local_models()
-    for k,v in models.items(): v["visible_in_local_opencode"] = k in local
-    status["local_opencode"] = f"error: {err}" if err else f"ok ({len(local)} models listed)"
+    if args.skip_local:
+        for v in models.values(): v["visible_in_local_opencode"] = None
+        status["local_opencode"] = "skipped (hosted catalog scan)"
+    else:
+        local, err = local_models()
+        for k,v in models.items(): v["visible_in_local_opencode"] = k in local
+        status["local_opencode"] = f"error: {err}" if err else f"ok ({len(local)} models listed)"
     print(f"Checked: {dt.datetime.now().astimezone().isoformat(timespec='seconds')}")
     print("Sources: " + "; ".join(f"{k}={v}" for k,v in status.items()))
     print(f"Advertised zero-price entries: {len(models)}; visible in OpenCode: {sum(x['visible_in_local_opencode'] for x in models.values())}")
