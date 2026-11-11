@@ -1,54 +1,57 @@
 # Model Radar
 
-A local, reproducible research kit for discovering advertised free model endpoints and choosing models by task. It separates three questions that are easy to confuse:
+[![Live dashboard](https://img.shields.io/badge/dashboard-live-2ea44f)](https://vishnu-itachi.github.io/model-radar/)
+[![Daily refresh](https://github.com/vishnu-itachi/model-radar/actions/workflows/daily-pages.yml/badge.svg)](https://github.com/vishnu-itachi/model-radar/actions/workflows/daily-pages.yml)
 
-1. **Is a model listed at $0?** Public catalog metadata says so.
-2. **Can my local agent see it?** Checked against `opencode models`.
-3. **Can I use it now, with enough quota and reliable quality?** This depends on provider account, region, rate limits, current capacity, and agent harness. Catalog data cannot answer this alone.
+**A daily-updated directory of advertised free AI model endpoints, with task-specific benchmark comparisons.** Find candidate models for coding, document work, and presentations, then check their source, context window, and advertised tool support.
 
-## Quick start
+## Open the dashboard
 
-Requires Python 3. No third-party packages.
+**[vishnu-itachi.github.io/model-radar](https://vishnu-itachi.github.io/model-radar/)** — public, mobile-friendly, and refreshed every day at 07:00 India Standard Time. The latest scan checks [models.dev](https://models.dev/) and the [OpenRouter model catalog](https://openrouter.ai/docs/api/api-reference/models/list).
+
+A $0 catalog price means the catalog currently lists zero input and output cost. It does **not** guarantee account eligibility, remaining quota, uptime, tool support, or that an endpoint is chat-capable. The dashboard flags missing modality data and separates catalog discovery from benchmark evidence.
+
+## What’s inside
+
+- A searchable view of models with explicitly zero input and output prices across all catalog providers returned by models.dev and OpenRouter.
+- Context, modality, advertised tool calling, catalog source, and (for local runs) exact-name visibility in `opencode models`.
+- Task-oriented Artificial Analysis (AA) comparisons: a labeled coding blend, AA-Briefcase knowledge-work scores, and matched Flash-family scores where available.
+- Notes on connecting Chinese coding CLIs to T3 Code using ACP, including the important distinction between ACP support and free model access.
+- A GitHub Actions workflow that refreshes catalogs and republishes the site daily. AA benchmark scores are a dated snapshot and are not automatically refreshed.
+
+## Run locally
+
+Requires Python 3; no third-party packages are needed for the scripts.
 
 ```sh
+# Refresh public catalog data and compare exact IDs with locally listed OpenCode models
 python3 scripts/free_model_tracker.py
+
+# Print the dated task rankings
 python3 scripts/rank_domains.py
-```
 
-The tracker queries all provider entries in [models.dev](https://models.dev/) and the [OpenRouter models API](https://openrouter.ai/docs/api/api-reference/models/list). It writes `data/free-models-latest.json`; the committed dated snapshot is from 2026-11-11. It uses `opencode models` when installed. `--include-non-chat` retains catalog listings whose modality may be image/audio-only. A price of zero is catalog metadata, not a promise of availability or a provider entitlement. For OpenRouter, check the model page and account limits; free model limits may be restricted.
-
-To refresh Artificial Analysis's authenticated free-model endpoint:
-
-```sh
-export AA_API_KEY='…' # use your own key; do not commit it
-python3 scripts/refresh_aa.py
-```
-
-The free AA endpoint provides headline indices/capability scores, not the full benchmark matrix. API access is rate-limited and subject to AA attribution and internal-use terms. This repo does not include an API key. See the [AA API docs](https://artificialanalysis.ai/data-api/docs).
-
-## Findings as of 2026-11-11
-
-- The refreshed all-provider catalog scan found 565 entries with explicitly zero input and output price: 550 from models.dev and 15 from OpenRouter. Twelve exact IDs matched the 71 models shown by local `opencode models`. Many models.dev entries omit modality, so this is a candidate list, not 565 confirmed chat models. These counts change and are not a complete census of every model vendor.
-- Chinese-model name detection is a convenience heuristic, not verified model provenance. The Chinese CLIs below do work with T3 Code's local ACP mechanism, but ACP only connects an agent process; it does not give it free credentials, quota, or a free model.
-- There is no single best model across domains. For coding among the compared Chinese models, Kimi K3.1 Pro was strongest on Terminal-Bench 4.0 while DeepSeek V4.1 Flash 1017 Max led FrontierCode-AA 2.0. AA's combined intelligence index rewards a wider set of tasks, so it is not a coding-only score.
-- For knowledge work and document artifacts, AA-Briefcase and GDPval-AA are useful proxies. They include multi-step work and generated artifacts such as presentations, spreadsheets, and documents. They do not fully measure presentation visual polish or the quality of a specific PowerPoint deliverable.
-- The free OpenRouter and OpenCode variants need separate verification. Benchmark scores are for the exact named model/configuration, often a paid or Max/Pro tier, and cannot be assumed to transfer to a free alias/provider route.
-
-## Research and method
-
-See [`research/current-findings-2026-11-11.md`](research/current-findings-2026-11-11.md) for ACP setup, provider limits, benchmark interpretation, matched free-family candidates, and model-by-task analysis. The dated AA table in `data/aa_scores_2026-11-11.csv` supports a clearly labeled heuristic coding composite; `data/aa_free_variant_comparables_2026-11-11.csv` separately covers the AA-scored Flash families that resemble free catalog variants: 60% FrontierCode-AA 2.0 and 40% Terminal-Bench 4.0 (the 15:10 weight ratio in AA's coding component). It is not an official AA coding index. The `briefcase_elo` and `gdpval_aa_v2_1` columns are separate measures and should not be blended into that composite.
-
-The tracker is a discovery tool, not an uptime monitor. For genuine “is it usable right now?” tracking, add periodic checks using the exact credentials and endpoints you intend to use, record HTTP errors/latency/quota, and never send private code to an untrusted free endpoint.
-
-## Public daily dashboard
-
-GitHub Actions publishes a static dashboard to GitHub Pages at `https://vishnu-itachi.github.io/model-radar/` once the public repository and Pages deployment are enabled. The workflow runs daily at 07:00 IST, on pushes to `main`, or manually from the Actions tab. It refreshes public catalog metadata, builds the dashboard data, and deploys Pages. It does not refresh AA benchmark scores; those remain labeled with their snapshot date. No provider credentials are needed for the public catalog scan.
-
-To preview locally, run:
-
-```sh
+# Build and preview the dashboard from the latest snapshot
 python3 scripts/build_site.py
 python3 -m http.server 8000 --directory site
 ```
 
-Then open `http://localhost:8000`. On hosted runs the catalog tracker skips the local OpenCode comparison because the GitHub runner does not share your machine's installed/authenticated provider list.
+Open `http://localhost:8000`. On GitHub Actions, the workflow uses `--skip-local`, since its runner cannot see your local OpenCode installation or account.
+
+To refresh AA’s authenticated free-model endpoint, set your own key in the environment. Do not commit it:
+
+```sh
+export AA_API_KEY='…'
+python3 scripts/refresh_aa.py
+```
+
+The free AA API returns headline fields, not its full benchmark matrix. API limits, attribution, and use terms apply; see the [AA API documentation](https://artificialanalysis.ai/data-api/docs).
+
+## How to read the rankings
+
+There is no single best model for every job. The coding blend uses 60% FrontierCode-AA 2.0 and 40% Terminal-Bench 4.0, mirroring their relative weights inside AA’s coding category; it is an unofficial comparison score. AA-Briefcase is a broad agentic knowledge-work and artifact benchmark, not a PowerPoint-only design score. Benchmarks apply to the exact tested model/configuration and may not transfer to a free alias or a different provider route.
+
+The detailed, dated research is in [`research/current-findings-2026-11-11.md`](research/current-findings-2026-11-11.md). Score data is in [`data/aa_scores_2026-11-11.csv`](data/aa_scores_2026-11-11.csv) and [`data/aa_free_variant_comparables_2026-11-11.csv`](data/aa_free_variant_comparables_2026-11-11.csv).
+
+## Automation
+
+The [daily Pages workflow](.github/workflows/daily-pages.yml) runs at 07:00 IST, on pushes to `main`, or manually from the Actions tab. It refreshes public catalog metadata, builds the dashboard, and deploys it to [GitHub Pages](https://vishnu-itachi.github.io/model-radar/). The repository is public so the dashboard can be opened without signing in.
